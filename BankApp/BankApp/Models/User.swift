@@ -1,7 +1,6 @@
-import Foundation
-
 struct User {
     let id: String
-    let login: String
-    let name: String?
+    let email: String
+    let password: String
+    var name: String?
 }

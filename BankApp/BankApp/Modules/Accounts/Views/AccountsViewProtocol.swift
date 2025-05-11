@@ -1,5 +1,3 @@
-import Foundation
-
 protocol AccountsViewProtocol: AnyObject {
     func displayAccounts(_ accounts: [Account])
     func showLoading(_ isLoading: Bool)

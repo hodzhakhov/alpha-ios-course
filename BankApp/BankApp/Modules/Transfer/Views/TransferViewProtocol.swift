@@ -1,5 +1,3 @@
-import Foundation
-
 protocol TransferViewProtocol: AnyObject {
     func showLoading(_ isLoading: Bool)
     func showError(_ message: String)
