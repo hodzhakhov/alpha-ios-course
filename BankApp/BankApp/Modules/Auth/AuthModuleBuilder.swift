@@ -3,8 +3,8 @@ import UIKit
 class AuthModuleBuilder {
     static func build() -> UIViewController {
         let view = AuthViewController()
-        let dataStore = DataStoreFacade()
-        let interactor = AuthInteractor(dataStore: dataStore)
+        let dataStorage = DataStorageApi()
+        let interactor = AuthInteractor(dataStorage: dataStorage)
         let router = AuthRouter()
         let presenter = AuthPresenter()
         
