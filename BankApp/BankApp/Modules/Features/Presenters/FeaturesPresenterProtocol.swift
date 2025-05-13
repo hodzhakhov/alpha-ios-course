@@ -1,4 +1,5 @@
 protocol FeaturesPresenterProtocol: AnyObject {
-    func viewDidLoad()
+    func fetchFeatures()
+    func fetchCurrencyRates()
     func didSelectFeature(_ feature: Feature)
 }

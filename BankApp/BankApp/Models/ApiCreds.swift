@@ -21,4 +21,11 @@ struct ApiCreds {
         }
         return passwordString
     }()
+    
+    static let currencyURL: String = {
+        guard let currencyURLString = ProcessInfo.processInfo.environment["CURRENCY_URL"] else {
+            fatalError("CURRENCY_URL environment variable not set")
+        }
+        return currencyURLString
+    }()
 }

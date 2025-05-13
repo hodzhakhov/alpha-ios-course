@@ -90,6 +90,11 @@
             value = "368996"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "CURRENCY_URL"
+            value = "https://openexchangerates.org/api/latest.json?app_id=c3a1280588f448388e3ef77eb31c39ed"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
