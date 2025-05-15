@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  BankApp
-//
-//  Created by Эмиль Ходжахов on 10.05.25.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -19,8 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        let initialViewController = YourInitialViewController()
-        window?.rootViewController = UINavigationController(rootViewController: initialViewController)
+        window?.rootViewController = UINavigationController(rootViewController: AuthModuleBuilder.build())
         window?.makeKeyAndVisible()
     }
     

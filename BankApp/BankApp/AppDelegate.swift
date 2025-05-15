@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  BankApp
-//
-//  Created by Эмиль Ходжахов on 10.05.25.
-//
-
 import UIKit
 
 @main

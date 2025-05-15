@@ -1,8 +1,7 @@
 protocol AuthPresenterProtocol: AnyObject {
-    func loginButtonTapped(login: String, password: String)
-    func registerButtonTapped(login: String, password: String, confirmPassword: String)
+    func loginButtonTapped(email: String, password: String)
+    func registerButtonTapped(email: String, password: String, confirmPassword: String)
     func didSwitchToLogin()
     func didSwitchToRegister()
-    func handleAppMovedToForeground()
-    func handleAppMovedToBackground()
+    func validateInput(email: String, password: String, confirmPassword: String?)
 }

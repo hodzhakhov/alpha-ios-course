@@ -1,5 +1,3 @@
-import Foundation
-
 enum TransactionStatus: String {
     case pending
     case completed

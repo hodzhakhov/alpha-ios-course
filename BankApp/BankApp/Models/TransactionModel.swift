@@ -7,5 +7,5 @@ struct Transaction {
     let amount: Double
     let currency: Currency
     let date: Date
-    let status: TransactionStatus
+    var status: TransactionStatus
 }

@@ -1,5 +1,3 @@
-import Foundation
-
 protocol ProfileViewProtocol: AnyObject {
     func displayProfile(_ user: User)
     func showLoading(_ isLoading: Bool)
