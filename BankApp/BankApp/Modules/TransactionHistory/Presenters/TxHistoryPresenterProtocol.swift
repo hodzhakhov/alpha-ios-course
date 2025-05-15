@@ -1,3 +1,3 @@
 protocol TxHistoryPresenterProtocol: AnyObject {
-    func viewDidLoad(accountId: String)
+    func fetchTxHistory(accountId: String)
 }

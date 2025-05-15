@@ -1,6 +1,6 @@
 import Foundation
 
-class DataStoreFacade: DataStoreFacadeProtocol {
+class DataStorageFacade: DataStorageProtocol {
     private var users: [String: User] = [:]
     
     func login(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
