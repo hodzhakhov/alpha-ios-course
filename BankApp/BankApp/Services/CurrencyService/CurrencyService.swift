@@ -2,7 +2,7 @@ import Foundation
 
 class CurrencyService: CurrencyServiceProtocol {
     private let url = URL(string: ApiCreds.currencyURL)!
-    private let cache = CacheService<[CurrencyRate]>(key: "cached_currency_rates", expiration: 3600)
+    private let cache = CacheService<[CurrencyRate]>(key: "cached_currency_rates", expiration: 10)
     
     func fetchRates(completion: @escaping (Result<[CurrencyRate], Error>) -> Void) {
         if let cachedRates = cache.load() {

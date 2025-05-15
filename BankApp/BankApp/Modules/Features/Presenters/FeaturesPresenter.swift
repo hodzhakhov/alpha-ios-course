@@ -24,11 +24,9 @@ class FeaturesPresenter: FeaturesPresenterProtocol {
     }
     
     func fetchCurrencyRates() {
-        view?.showLoading(true)
 
         interactor?.fetchCurrencyRates { [weak self] result in
             DispatchQueue.main.async {
-                self?.view?.showLoading(false)
 
                 switch result {
                 case .success(let rates):
@@ -42,11 +40,11 @@ class FeaturesPresenter: FeaturesPresenterProtocol {
 
     func didSelectFeature(_ feature: Feature) {
         switch feature.id {
-        case "accounts":
+        case "счета":
             router?.navigateToAccounts()
-        case "transfer":
+        case "переводы":
             router?.navigateToTransfer()
-        case "history":
+        case "история":
             router?.navigateToTransactionHistory()
         default:
             break

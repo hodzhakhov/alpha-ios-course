@@ -9,9 +9,9 @@ class FeaturesInteractor: FeaturesInteractorProtocol {
 
     func fetchFeatures(completion: @escaping (Result<[Feature], Error>) -> Void) {
         let features = [
-            Feature(id: "accounts", title: "Счета", description: "Управление счетами"),
-            Feature(id: "transfer", title: "Переводы", description: "Перевод средств"),
-            Feature(id: "history", title: "История", description: "Просмотр транзакций")
+            Feature(id: "счета", title: "счета", description: "Управление счетами"),
+            Feature(id: "переводы", title: "переводы", description: "Перевод средств"),
+            Feature(id: "история", title: "история", description: "Просмотр транзакций")
         ]
         completion(.success(features))
     }

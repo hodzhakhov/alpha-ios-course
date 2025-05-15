@@ -49,7 +49,7 @@ class AuthViewController: UIViewController, AuthViewProtocol {
         return button
     }()
     
-    private let errorLabel: UILabel = {
+    private lazy var errorLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemRed
         label.numberOfLines = 0
