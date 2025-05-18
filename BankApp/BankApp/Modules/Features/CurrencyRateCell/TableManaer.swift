@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-final class TableManager: NSObject, TableManagerProtocol {
+class TableManager: NSObject, TableManagerProtocol {
     private var tableView: UITableView?
     private var viewModels: [CurrencyRateCellViewModel] = []
     weak var delegate: TableManagerDelegate?
