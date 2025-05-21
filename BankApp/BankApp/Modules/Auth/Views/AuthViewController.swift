@@ -34,7 +34,6 @@ class AuthViewController: UIViewController, AuthViewProtocol {
         return textField
     }()
     
-    
     private lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Войти", for: .normal)
@@ -58,7 +57,12 @@ class AuthViewController: UIViewController, AuthViewProtocol {
         return label
     }()
     
-    private var isLoginMode = true
+    private lazy var loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,7 +71,7 @@ class AuthViewController: UIViewController, AuthViewProtocol {
     
     private func setupUI() {
         view.backgroundColor = .white
-        [usernameTextField, passwordTextField, confirmPasswordTextField, loginButton, switchAuthModeButton, errorLabel].forEach {
+        [usernameTextField, passwordTextField, confirmPasswordTextField, loginButton, switchAuthModeButton, errorLabel, loadingIndicator].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -93,9 +97,11 @@ class AuthViewController: UIViewController, AuthViewProtocol {
             
             errorLabel.topAnchor.constraint(equalTo: switchAuthModeButton.bottomAnchor, constant: 15),
             errorLabel.leadingAnchor.constraint(equalTo: usernameTextField.leadingAnchor),
-            errorLabel.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor)
+            errorLabel.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor),
+            
+            loadingIndicator.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 20),
+            loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-        
     }
     
     @objc private func authButtonTapped() {
@@ -103,41 +109,39 @@ class AuthViewController: UIViewController, AuthViewProtocol {
         let password = passwordTextField.text ?? ""
         let confirmPassword = confirmPasswordTextField.text ?? ""
         
-        if isLoginMode {
-            presenter?.loginButtonTapped(email: email, password: password)
-        } else {
-            presenter?.registerButtonTapped(email: email, password: password, confirmPassword: confirmPassword)
-        }
+        presenter?.authButtonTapped(email: email, password: password, confirmPassword: confirmPassword)
     }
     
     @objc private func switchAuthMode() {
-        isLoginMode.toggle()
-        loginButton.setTitle(isLoginMode ? "Войти" : "Зарегистрироваться", for: .normal)
-        switchAuthModeButton.setTitle(isLoginMode ? "Нет аккаунта? Зарегистрироваться" : "Уже есть аккаунт? Войти", for: .normal)
-        confirmPasswordTextField.isHidden = isLoginMode
-        errorLabel.text = ""
-        isLoginMode ? presenter?.didSwitchToLogin() : presenter?.didSwitchToRegister()
+        presenter?.toggleAuthMode()
     }
     
     @objc private func textFieldDidChange() {
         let email = usernameTextField.text ?? ""
         let password = passwordTextField.text ?? ""
-        let confirm = isLoginMode ? nil : confirmPasswordTextField.text
+        let confirm = confirmPasswordTextField.isHidden ? nil : confirmPasswordTextField.text
         presenter?.validateInput(email: email, password: password, confirmPassword: confirm)
     }
     
     func showLoginScreen() {
-        isLoginMode = true
+        confirmPasswordTextField.isHidden = true
         loginButton.setTitle("Войти", for: .normal)
+        switchAuthModeButton.setTitle("Нет аккаунта? Зарегистрироваться", for: .normal)
     }
     
     func showRegistrationScreen() {
-        isLoginMode = false
+        confirmPasswordTextField.isHidden = false
         loginButton.setTitle("Зарегистрироваться", for: .normal)
+        switchAuthModeButton.setTitle("Уже есть аккаунт? Войти", for: .normal)
     }
     
     func showLoading(_ isLoading: Bool) {
         loginButton.isEnabled = !isLoading
+        if isLoading {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
     }
     
     func showError(_ message: String) {

@@ -2,17 +2,51 @@ import Foundation
 
 class AuthPresenter: AuthPresenterProtocol {
     weak var view: AuthViewProtocol?
-    var interactor: AuthInteractorProtocol?
-    var router: AuthRouterProtocol?
+    let interactor: AuthInteractorProtocol
+    let router: AuthRouterProtocol
+    
+    init(view: AuthViewProtocol, interactor: AuthInteractorProtocol, router: AuthRouterProtocol) {
+        self.view = view
+        self.interactor = interactor
+        self.router = router
+        updateViewMode()
+    }
+    
+    private var isLoginMode: Bool = true {
+        didSet {
+            updateViewMode()
+        }
+    }
+    
+    private func updateViewMode() {
+        if isLoginMode {
+            view?.showLoginScreen()
+        } else {
+            view?.showRegistrationScreen()
+        }
+    }
+    
+    func authButtonTapped(email: String, password: String, confirmPassword: String?) {
+        if isLoginMode {
+            loginButtonTapped(email: email, password: password)
+        } else {
+            guard let confirmPassword = confirmPassword else { return }
+            registerButtonTapped(email: email, password: password, confirmPassword: confirmPassword)
+        }
+    }
+    
+    func toggleAuthMode() {
+        isLoginMode.toggle()
+    }
     
     func loginButtonTapped(email: String, password: String) {
         view?.showLoading(true)
-        interactor?.login(email: email, password: password) { [weak self] result in
+        interactor.login(email: email, password: password) { [weak self] result in
             DispatchQueue.main.async {
                 self?.view?.showLoading(false)
                 switch result {
                 case .success(let user):
-                    self?.router?.navigateToFeaturesScreen(user: user)
+                    self?.router.navigateToFeaturesScreen(user: user)
                 case .failure(let error):
                     self?.view?.showError(error.localizedDescription)
                 }
@@ -22,25 +56,17 @@ class AuthPresenter: AuthPresenterProtocol {
     
     func registerButtonTapped(email: String, password: String, confirmPassword: String) {
         view?.showLoading(true)
-        interactor?.register(email: email, password: password) { [weak self] result in
+        interactor.register(email: email, password: password) { [weak self] result in
             DispatchQueue.main.async {
                 self?.view?.showLoading(false)
                 switch result {
                 case .success(let user):
-                    self?.router?.navigateToFeaturesScreen(user: user)
+                    self?.router.navigateToFeaturesScreen(user: user)
                 case .failure(let error):
                     self?.view?.showError(error.localizedDescription)
                 }
             }
         }
-    }
-    
-    func didSwitchToLogin() {
-        view?.showLoginScreen()
-    }
-    
-    func didSwitchToRegister() {
-        view?.showRegistrationScreen()
     }
     
     private func isValidEmail(_ email: String) -> Bool {

@@ -1,5 +1,15 @@
 struct Feature {
-    let id: String
-    let title: String
-    let description: String
+    let type: FeatureType
+    
+    var id: String {
+        return type.rawValue
+    }
+    
+    var title: String {
+        return type.title
+    }
+    
+    var description: String {
+        return type.description
+    }
 }

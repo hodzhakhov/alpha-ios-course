@@ -16,8 +16,6 @@ class FeaturesRouter: FeaturesRouterProtocol {
     }
     
     func navigateToProfile() {
-        print("Перехож в профиль")
+        print("Переход в профиль")
     }
-    
-    
 }

@@ -1,14 +1,14 @@
 import Foundation
 
 class AuthInteractor: AuthInteractorProtocol {
-    private let dataStorage: DataStorageProtocol
+    private let authService: AuthServiceProtocol
     
-    init(dataStorage: DataStorageProtocol) {
-        self.dataStorage = dataStorage
+    init(authService: AuthServiceProtocol) {
+        self.authService = authService
     }
     
     func login(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
-        dataStorage.login(email: email, password: password) { result in
+        authService.login(email: email, password: password) { result in
             switch result {
             case .success(let user):
                 if user.password == password {
@@ -23,12 +23,12 @@ class AuthInteractor: AuthInteractorProtocol {
     }
     
     func register(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
-        dataStorage.login(email: email, password: password) { [weak self] result in
+        authService.login(email: email, password: password) { [weak self] result in
             switch result {
             case .success:
                 completion(.failure(AuthError.userAlreadyExists))
             case .failure:
-                self?.dataStorage.register(email: email, password: password, completion: completion)
+                self?.authService.register(email: email, password: password, completion: completion)
             }
         }
     }
