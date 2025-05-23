@@ -2,7 +2,7 @@ import Foundation
 
 class CurrencyService: CurrencyServiceProtocol {
     private let url: URL
-    private let cache = CacheService<[CurrencyRate]>(key: "cached_currency_rates", expiration: 10)
+    private let cache = CacheService<[CurrencyRate]>(key: "cached_currency_rates", expiration: 3600)
     private let networkService: NetworkServiceProtocol
     
     init(networkService: NetworkServiceProtocol = NetworkService()) {

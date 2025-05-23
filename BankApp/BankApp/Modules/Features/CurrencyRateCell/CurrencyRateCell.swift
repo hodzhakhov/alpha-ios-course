@@ -3,27 +3,9 @@ import UIKit
 final class CurrencyRateCell: UITableViewCell {
     static let reuseIdentifier = "CurrencyRateCell"
     
-    private lazy var currencyLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 15)
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private lazy var rateLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 15)
-        label.textAlignment = .right
-        return label
-    }()
-    
-    private lazy var stack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [currencyLabel, rateLabel])
-        stack.axis = .horizontal
-        stack.spacing = 8
-        stack.distribution = .fillEqually
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
+    private lazy var cardView: DSCard = {
+        let card = DSCard()
+        return card
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -36,18 +18,28 @@ final class CurrencyRateCell: UITableViewCell {
     }
     
     private func setupUI() {
-        contentView.addSubview(stack)
+        selectionStyle = .none
+        contentView.addSubview(cardView)
+        cardView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+            cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Spacing.spacing2),
+            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spacing.spacing2),
+            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spacing.spacing8),
+            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spacing.spacing8),
+            cardView.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     
     func configure(with viewModel: CurrencyRateCellViewModel) {
-        currencyLabel.text = viewModel.currencyCode
-        rateLabel.text = viewModel.rateText
+        let cardViewModel = DSCardViewModel(
+            title: viewModel.currencyCode,
+            subtitle: viewModel.rateText,
+            style: .filled,
+            action: { [weak self] in
+                print("Выбрана валюта: \(viewModel.currencyCode) с курсом \(viewModel.rateText)")
+            }
+        )
+        cardView.configure(with: cardViewModel)
     }
 }

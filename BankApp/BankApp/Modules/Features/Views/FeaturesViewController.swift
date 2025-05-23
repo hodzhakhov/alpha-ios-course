@@ -9,35 +9,53 @@ class FeaturesViewController: UIViewController, FeaturesViewProtocol {
         return scroll
     }()
     
-    private lazy var contentStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 16
+    private lazy var contentStack: DSStackView = {
+        let stack = DSStackView()
+        stack.configure(with: DSStackViewModel(
+            axis: .vertical,
+            spacing: Spacing.spacing16
+        ))
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
     
-    private lazy var featuresStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 12
-        stack.distribution = .fillEqually
+    private lazy var featuresStack: DSStackView = {
+        let stack = DSStackView()
+        stack.configure(with: DSStackViewModel(
+            axis: .vertical,
+            spacing: Spacing.spacing12,
+            distribution: .fillEqually
+        ))
         return stack
     }()
     
-    private lazy var ratesLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Курсы валют к 1 доллару"
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.textAlignment = .left
+    private lazy var featuresLabel: DSLabel = {
+        let label = DSLabel()
+        let viewModel = DSLabelViewModel(
+            text: "Ваши возможности",
+            style: .subtitle,
+            alignment: .left
+        )
+        label.configure(with: viewModel)
+        return label
+    }()
+    
+    private lazy var ratesLabel: DSLabel = {
+        let label = DSLabel()
+        let viewModel = DSLabelViewModel(
+            text: "Курсы валют к 1 доллару",
+            style: .subtitle,
+            alignment: .left
+        )
+        label.configure(with: viewModel)
         return label
     }()
     
     private lazy var ratesContainerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = UIColor.systemGray4.cgColor
+        view.layer.borderColor = Color.secondary.cgColor
         view.layer.borderWidth = 1
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = Radius.medium
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -64,7 +82,7 @@ class FeaturesViewController: UIViewController, FeaturesViewProtocol {
     }()
     
     private let tableManager: TableManagerProtocol = TableManager()
-    // Хранение сведений о фичах
+    
     private var features: [Feature] = []
     
     override func viewDidLoad() {
@@ -77,11 +95,12 @@ class FeaturesViewController: UIViewController, FeaturesViewProtocol {
     }
     
     private func setupUI() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = Color.background
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentStack)
         
+        contentStack.addArrangedSubview(featuresLabel)
         contentStack.addArrangedSubview(featuresStack)
         contentStack.addArrangedSubview(ratesLabel)
         contentStack.addArrangedSubview(ratesContainerView)
@@ -98,11 +117,11 @@ class FeaturesViewController: UIViewController, FeaturesViewProtocol {
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            contentStack.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16),
-            contentStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-            contentStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            contentStack.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: Spacing.spacing16),
+            contentStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Spacing.containerMedium),
+            contentStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -Spacing.containerMedium),
             contentStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
+            contentStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -Spacing.containerMedium * 2),
             
             ratesTableView.topAnchor.constraint(equalTo: ratesContainerView.topAnchor),
             ratesTableView.leadingAnchor.constraint(equalTo: ratesContainerView.leadingAnchor),
@@ -124,29 +143,23 @@ class FeaturesViewController: UIViewController, FeaturesViewProtocol {
         featuresStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         features.forEach { feature in
-            let button = UIButton(type: .system)
-            button.setTitle(feature.title, for: .normal)
-            button.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
-            button.backgroundColor = .systemGray6
-            button.layer.cornerRadius = 8
-            button.addTarget(self, action: #selector(featureButtonTapped(_:)), for: .touchUpInside)
+            let button = DSButton()
+            let viewModel = DSButtonViewModel(
+                title: feature.title,
+                style: .primary,
+                action: { [weak self] in
+                    self?.featureButtonTapped(feature)
+                }
+            )
+            button.configure(with: viewModel)
+            button.heightAnchor.constraint(equalToConstant: 60).isActive = true
             button.tag = features.firstIndex(where: { $0.id == feature.id }) ?? 0
             featuresStack.addArrangedSubview(button)
         }
     }
     
-    @objc private func featureButtonTapped(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.1, animations: {
-            sender.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-        }) { _ in
-            UIView.animate(withDuration: 0.1) {
-                sender.transform = .identity
-            }
-        }
-        
-        guard sender.tag < features.count else { return }
-        let selectedFeature = features[sender.tag]
-        presenter?.didSelectFeature(selectedFeature)
+    private func featureButtonTapped(_ feature: Feature) {
+        presenter?.didSelectFeature(feature)
     }
     
     func displayCurrencyRates(_ rates: [CurrencyRate]) {
