@@ -297,7 +297,7 @@
 				CODE_SIGN_ENTITLEMENTS = BankApp/BankApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ZLA3MM4XN6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BankApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -326,7 +326,7 @@
 				CODE_SIGN_ENTITLEMENTS = BankApp/BankApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ZLA3MM4XN6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BankApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

@@ -3,17 +3,13 @@ import Foundation
 class DataStorageFacade: DataStorageProtocol {
     private var users: [String: User] = [:]
     
-    func login(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
-        if let user = users[email] {
-            completion(.success(user))
-        } else {
-            completion(.failure(NSError(domain: "DataStoreFacade", code: 404, userInfo: nil)))
-        }
+    func getUser(email: String, completion: @escaping (Result<User?, Error>) -> Void) {
+        let user = users[email]
+        completion(.success(user))
     }
     
-    func register(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
-        let newUser = User(id: UUID().uuidString, email: email, password: password)
-        users[email] = newUser
-        completion(.success(newUser))
+    func saveUser(user: User, completion: @escaping (Result<Bool, Error>) -> Void) {
+        users[user.email] = user
+        completion(.success(true))
     }
 }

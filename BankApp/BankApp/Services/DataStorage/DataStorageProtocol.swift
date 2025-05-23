@@ -1,5 +1,4 @@
 protocol DataStorageProtocol {
-    func login(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void)
-    
-    func register(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void)
+    func getUser(email: String, completion: @escaping (Result<User?, Error>) -> Void)
+    func saveUser(user: User, completion: @escaping (Result<Bool, Error>) -> Void)
 }

@@ -4,20 +4,18 @@ class FeaturesRouter: FeaturesRouterProtocol {
     weak var viewController: UIViewController?
     
     func navigateToAccounts() {
-        print("Navigate to Accounts")
+        print("Переход в аккаунты")
     }
     
     func navigateToTransfer() {
-        print("Navigate to Transfer")
+        print("Переход в трансфер")
     }
     
     func navigateToTransactionHistory() {
-        print("Navigate to Transaction History")
+        print("Переход в историю транзакций")
     }
     
     func navigateToProfile() {
-        print("Navigate to Profile")
+        print("Переход в профиль")
     }
-    
-    
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-struct ApiCreds {
+enum ApiCreds {
     static let URL: String = {
         guard let urlString = ProcessInfo.processInfo.environment["API_URL"] else {
             fatalError("API_URL environment variable not set")

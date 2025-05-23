@@ -1,8 +1,14 @@
 import Foundation
 
 class CurrencyService: CurrencyServiceProtocol {
-    private let url = URL(string: ApiCreds.currencyURL)!
-    private let cache = CacheService<[CurrencyRate]>(key: "cached_currency_rates", expiration: 3600)
+    private let url: URL
+    private let cache = CacheService<[CurrencyRate]>(key: "cached_currency_rates", expiration: 10)
+    private let networkService: NetworkServiceProtocol
+    
+    init(networkService: NetworkServiceProtocol = NetworkService()) {
+        self.networkService = networkService
+        self.url = URL(string: ApiCreds.currencyURL)!
+    }
     
     func fetchRates(completion: @escaping (Result<[CurrencyRate], Error>) -> Void) {
         if let cachedRates = cache.load() {
@@ -10,28 +16,21 @@ class CurrencyService: CurrencyServiceProtocol {
             completion(.success(cachedRates))
             return
         }
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(NSError(domain: "NoData", code: 0, userInfo: nil)))
-                return
-            }
-            
-            do {
-                let decoded = try JSONDecoder().decode(CurrencyResponse.self, from: data)
-                let rates = decoded.rates.map { CurrencyRate(currency: $0.key, rate: $0.value) }
-                print("Load into cache")
-                self.cache.save(rates)
-                completion(.success(rates))
-            } catch {
+        
+        networkService.makeRequest(url: url, method: .get, headers: nil, body: nil, responseType: CurrencyResponse.self) { result in
+            switch result {
+            case .success(let anyObject):
+                if let response = anyObject as? CurrencyResponse {
+                    let rates = response.rates.map { CurrencyRate(currency: $0.key, rate: $0.value) }
+                    print("Load into cache")
+                    self.cache.save(rates)
+                    completion(.success(rates))
+                } else {
+                    completion(.failure(NetworkError.decodingError))
+                }
+            case .failure(let error):
                 completion(.failure(error))
             }
         }
-        
-        task.resume()
     }
 }

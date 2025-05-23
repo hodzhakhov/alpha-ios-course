@@ -2,16 +2,19 @@ import Foundation
 
 class FeaturesPresenter: FeaturesPresenterProtocol {
     weak var view: FeaturesViewProtocol?
-    var interactor: FeaturesInteractorProtocol?
-    var router: FeaturesRouterProtocol?
+    private let interactor: FeaturesInteractorProtocol
+    private let router: FeaturesRouterProtocol
     private let user: User
-
-    init(user: User) {
+    
+    init(view: FeaturesViewProtocol, interactor: FeaturesInteractorProtocol, router: FeaturesRouterProtocol, user: User) {
+        self.view = view
+        self.interactor = interactor
+        self.router = router
         self.user = user
     }
     
     func fetchFeatures() {
-        interactor?.fetchFeatures { [weak self] result in
+        interactor.fetchFeatures { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let features):
@@ -24,12 +27,10 @@ class FeaturesPresenter: FeaturesPresenterProtocol {
     }
     
     func fetchCurrencyRates() {
-        view?.showLoading(true)
-
-        interactor?.fetchCurrencyRates { [weak self] result in
+        
+        interactor.fetchCurrencyRates { [weak self] result in
             DispatchQueue.main.async {
-                self?.view?.showLoading(false)
-
+                
                 switch result {
                 case .success(let rates):
                     self?.view?.displayCurrencyRates(rates)
@@ -39,17 +40,15 @@ class FeaturesPresenter: FeaturesPresenterProtocol {
             }
         }
     }
-
+    
     func didSelectFeature(_ feature: Feature) {
-        switch feature.id {
-        case "accounts":
-            router?.navigateToAccounts()
-        case "transfer":
-            router?.navigateToTransfer()
-        case "history":
-            router?.navigateToTransactionHistory()
-        default:
-            break
+        switch feature.type {
+        case .accounts:
+            router.navigateToAccounts()
+        case .transfers:
+            router.navigateToTransfer()
+        case .history:
+            router.navigateToTransactionHistory()
         }
     }
 }
