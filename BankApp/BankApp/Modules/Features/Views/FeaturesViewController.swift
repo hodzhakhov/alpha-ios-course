@@ -64,7 +64,6 @@ class FeaturesViewController: UIViewController, FeaturesViewProtocol {
     }()
     
     private let tableManager: TableManagerProtocol = TableManager()
-    // Хранение сведений о фичах
     private var features: [Feature] = []
     
     override func viewDidLoad() {

@@ -7,6 +7,7 @@ class AuthRouter: AuthRouterProtocol {
         print("Успешная авторизация. Пользователь: \(user.email)")
         
         // let featuresViewController = FeaturesModuleBuilder.build(user: user)
+        //
         // под "эти должен заниматься роутер" имелось ввиду следующее?
         
         let view = FeaturesViewController()
