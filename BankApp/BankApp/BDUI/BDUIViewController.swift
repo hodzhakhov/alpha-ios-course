@@ -122,4 +122,4 @@ final class BDUIViewController: UIViewController, BDUIReloadable {
     func reload() {
         loadContent()
     }
-} 
+}

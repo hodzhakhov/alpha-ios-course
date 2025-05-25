@@ -25,4 +25,4 @@ struct BDUIModel: Decodable {
         
         self.subviews = try container.decodeIfPresent([BDUIModel].self, forKey: .subviews)
     }
-} 
+}

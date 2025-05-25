@@ -18,4 +18,4 @@ enum BDUIError: Error {
             return "Ошибка маппинга"
         }
     }
-} 
+}

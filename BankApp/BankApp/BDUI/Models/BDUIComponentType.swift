@@ -7,4 +7,4 @@ enum BDUIComponentType: String, Decodable {
     case button
     case card
     case textField
-} 
+}
