@@ -52,7 +52,7 @@ class DataStorageApi: DataStorageProtocol {
         do {
             let jsonData = try JSONEncoder().encode(user)
             
-            networkService.makeRequest(url: url, method: .post, headers: headers, body: jsonData, responseType: Data.self) { result in
+            networkService.makeRequest(url: url, method: .post, headers: headers, body: jsonData, responseType: EmptyResponse.self) { result in
                 switch result {
                 case .success:
                     completion(.success(true))

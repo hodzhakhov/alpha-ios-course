@@ -3,4 +3,5 @@ protocol FeaturesRouterProtocol: AnyObject {
     func navigateToTransfer()
     func navigateToTransactionHistory()
     func navigateToProfile()
+    func navigateToBDUI()
 }

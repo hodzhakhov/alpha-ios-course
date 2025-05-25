@@ -26,8 +26,7 @@ final class CurrencyRateCell: UITableViewCell {
             cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Spacing.spacing2),
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spacing.spacing2),
             cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spacing.spacing8),
-            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spacing.spacing8),
-            cardView.heightAnchor.constraint(equalToConstant: 40)
+            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spacing.spacing8)
         ])
     }
     
@@ -36,7 +35,7 @@ final class CurrencyRateCell: UITableViewCell {
             title: viewModel.currencyCode,
             subtitle: viewModel.rateText,
             style: .filled,
-            action: { [weak self] in
+            action: { [] in
                 print("Выбрана валюта: \(viewModel.currencyCode) с курсом \(viewModel.rateText)")
             }
         )

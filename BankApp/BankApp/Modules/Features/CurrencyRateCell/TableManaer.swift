@@ -32,6 +32,10 @@ extension TableManager: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.didSelectRate(viewModels[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
