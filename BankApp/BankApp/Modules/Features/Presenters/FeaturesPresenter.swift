@@ -51,5 +51,9 @@ class FeaturesPresenter: FeaturesPresenterProtocol {
             router.navigateToTransactionHistory()
         }
     }
+    
+    func openBDUIScreen() {
+        router.navigateToBDUI()
+    }
 }
 

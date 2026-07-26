@@ -1,5 +1,7 @@
 import Foundation
 
+struct EmptyResponse: Decodable {}
+
 class NetworkService: NetworkServiceProtocol {
     func makeRequest<T: Decodable>(url: URL, method: HttpMethod, headers: [String: String]? = nil, body: Data? = nil, responseType: T.Type? = nil, completion: @escaping (Result<Any, Error>) -> Void) {
         var request = URLRequest(url: url)

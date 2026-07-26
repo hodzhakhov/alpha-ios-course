@@ -69,6 +69,20 @@ class FeaturesViewController: UIViewController, FeaturesViewProtocol {
         return table
     }()
     
+    private lazy var openBDUIButton: DSButton = {
+        let button = DSButton()
+        let viewModel = DSButtonViewModel(
+            title: "Открыть BDUI Экран",
+            style: .secondary,
+            action: { [weak self] in
+                self?.presenter?.openBDUIScreen()
+            }
+        )
+        button.configure(with: viewModel)
+        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        return button
+    }()
+    
     private lazy var ratesLoadingIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .medium)
         indicator.translatesAutoresizingMaskIntoConstraints = false
@@ -104,6 +118,7 @@ class FeaturesViewController: UIViewController, FeaturesViewProtocol {
         contentStack.addArrangedSubview(featuresStack)
         contentStack.addArrangedSubview(ratesLabel)
         contentStack.addArrangedSubview(ratesContainerView)
+        contentStack.addArrangedSubview(openBDUIButton)
         
         ratesContainerView.addSubview(ratesTableView)
         ratesContainerView.addSubview(ratesLoadingIndicator)
